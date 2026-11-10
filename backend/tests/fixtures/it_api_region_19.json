@@ -1,0 +1,177 @@
+{
+ "success": true,
+ "center": {
+  "lat": 0,
+  "lng": 0
+ },
+ "results": [
+  {
+   "id": 54120,
+   "name": "IPERPETROLI3",
+   "fuels": [
+    {
+     "id": 125082897,
+     "price": 1.979,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": true
+    },
+    {
+     "id": 125082896,
+     "price": 2.219,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": true
+    }
+   ],
+   "location": {
+    "lat": 44.6562304,
+    "lng": 10.6430464
+   },
+   "insertDate": "2026-11-10T14:22:09+01:00",
+   "address": "BRESCIA 21 25039 - TRAVAGLIATO BS",
+   "brand": "PompeBianche",
+   "distance": null
+  },
+  {
+   "id": 55135,
+   "name": "IPERPETROLI 4",
+   "fuels": [
+    {
+     "id": 125082822,
+     "price": 1.985,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": true
+    },
+    {
+     "id": 125082821,
+     "price": 2.225,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": true
+    },
+    {
+     "id": 54453623,
+     "price": 0.639,
+     "name": "GPL",
+     "fuelId": 4,
+     "isSelf": false
+    }
+   ],
+   "location": {
+    "lat": 45.05840285072531,
+    "lng": 9.135665930688486
+   },
+   "insertDate": "2026-11-10T14:19:10+01:00",
+   "address": "S.S.35 KM 74 + 510/570 S.N.C 27042 - BRESSANA BOTTARONE PV",
+   "brand": "PompeBianche",
+   "distance": null
+  },
+  {
+   "id": 31097,
+   "name": "A.F. PETROLI SPA",
+   "fuels": [
+    {
+     "id": 125082908,
+     "price": 2.017,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": false
+    },
+    {
+     "id": 125082907,
+     "price": 1.967,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": true
+    },
+    {
+     "id": 125082911,
+     "price": 2.267,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": false
+    },
+    {
+     "id": 125082910,
+     "price": 2.217,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": true
+    },
+    {
+     "id": 125082909,
+     "price": 0.829,
+     "name": "GPL",
+     "fuelId": 4,
+     "isSelf": false
+    },
+    {
+     "id": 125082913,
+     "price": 2.367,
+     "name": "Gasolio speciale",
+     "fuelId": 27,
+     "isSelf": false
+    },
+    {
+     "id": 125082912,
+     "price": 2.317,
+     "name": "Gasolio speciale",
+     "fuelId": 27,
+     "isSelf": true
+    }
+   ],
+   "location": {
+    "lat": 45.2962270705734,
+    "lng": 10.807396620512009
+   },
+   "insertDate": "2026-11-10T14:22:29+01:00",
+   "address": "s.s. Ex Cisa 62, km 198,76 lato sx  46048 - ROVERBELLA MN",
+   "brand": "AFPetroli",
+   "distance": null
+  },
+  {
+   "id": 61594,
+   "name": "STAR OIL MORTARA",
+   "fuels": [
+    {
+     "id": 122737093,
+     "price": 2.149,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": false
+    },
+    {
+     "id": 122737092,
+     "price": 2.149,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": true
+    },
+    {
+     "id": 122737095,
+     "price": 2.289,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": false
+    },
+    {
+     "id": 122737094,
+     "price": 2.289,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": true
+    }
+   ],
+   "location": {
+    "lat": 45.25764,
+    "lng": 8.7499561
+   },
+   "insertDate": "2026-09-15T21:54:11+01:00",
+   "address": "MILANESE 2 27036 - MORTARA PV",
+   "brand": "PompeBianche",
+   "distance": null
+  }
+ ]
+}

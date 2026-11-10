@@ -1,0 +1,93 @@
+{
+ "success": true,
+ "center": {
+  "lat": 0,
+  "lng": 0
+ },
+ "results": [
+  {
+   "id": 24827,
+   "name": "441 ROGLIANO OVEST",
+   "fuels": [
+    {
+     "id": 125077942,
+     "price": 2.349,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": false
+    },
+    {
+     "id": 125077941,
+     "price": 1.999,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": true
+    },
+    {
+     "id": 125077944,
+     "price": 2.64,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": false
+    },
+    {
+     "id": 125077943,
+     "price": 2.29,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": true
+    }
+   ],
+   "location": {
+    "lat": 39.188681315493014,
+    "lng": 16.30707174539566
+   },
+   "insertDate": "2026-11-10T12:49:54+01:00",
+   "address": "Autostrada A3 SALERNO-REGGIO CALABRIA, Km. 274+653, dir. Sud - - - MARZI CS",
+   "brand": "Api-Ip",
+   "distance": null
+  },
+  {
+   "id": 58314,
+   "name": "MG MORTELLARO S.R.L",
+   "fuels": [
+    {
+     "id": 124965087,
+     "price": 2.139,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": false
+    },
+    {
+     "id": 124965086,
+     "price": 2.139,
+     "name": "Benzina",
+     "fuelId": 1,
+     "isSelf": true
+    },
+    {
+     "id": 124965089,
+     "price": 2.399,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": false
+    },
+    {
+     "id": 124965088,
+     "price": 2.399,
+     "name": "Gasolio",
+     "fuelId": 2,
+     "isSelf": true
+    }
+   ],
+   "location": {
+    "lat": 0.0,
+    "lng": 0.0
+   },
+   "insertDate": "2026-11-08T10:02:59+01:00",
+   "address": "strada statale 118, km 77+640,  snc 92020 - SANTO STEFANO QUISQUINA AG",
+   "brand": "PompeBianche",
+   "distance": null
+  }
+ ]
+}

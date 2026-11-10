@@ -5,7 +5,7 @@ source is a **plugin**. Three countries ship today:
 
 | Country | Source | Stations | Notes |
 |---|---|---|---|
-| Italia (`it`) | MIMIT open data, two CSVs published daily | ~21,600 | self/attended prices, per-price timestamps |
+| Italia (`it`) | MIMIT Osservaprezzi API (CSV open data as fallback) | ~21,600 | live, self/attended prices, estimated per-price dates |
 | Slovenija (`si`) | goriva.si JSON API | ~540 | one price per fuel, no timestamps |
 | Hrvatska (`hr`) | mzoe-gor.hr (Ministry of Economy), gzipped JSON | ~870 | one price per fuel, no timestamps |
 
@@ -24,12 +24,12 @@ There is no server. The app is a static site that reads pre-built data files:
 - **`backend/`** (Python 3.12) holds the country plugins and the `fuelprice-build` command. It fetches every source, normalizes the data and writes compact JSON files (`export.py` describes the format). It is not a server: it only runs at build time.
 - **`frontend/`** (Vite, TypeScript, Leaflet, markercluster) is the web app. Markers show the price, colored from green (cheap) to red, and clusters show the lowest price inside them. Several countries can be shown at once.
 
-A build job is needed because the Italian and Slovenian sources don't send CORS headers. That means a browser can't read them directly, while it can read files published next to the app.
+A build job is needed because the Italian and Slovenian sources don't send CORS headers (and the Italian API rate-limits). That means a browser can't read them directly, while it can read files published next to the app.
 
 ## How the app keeps data fresh
 
 - Everything downloaded is saved in the browser's **IndexedDB**. A reopened app starts from the saved copy without waiting for the network.
-- When the saved data is **older than 4 hours**, the app re-checks `meta.json`, which is small. It then downloads a country again only if that country's file has changed (`hash` in `meta.json`). Italy publishes once a day, so most checks download nothing. Only the countries you select are downloaded.
+- When the saved data is **older than 4 hours**, the app re-checks `meta.json`, which is small. It then downloads a country again only if that country's file has changed (`hash` in `meta.json`). Slovenia and Croatia often stay unchanged between builds, so those checks download nothing. Only the countries you select are downloaded.
 - While the app stays open, it checks again every 10 minutes and whenever the tab comes back to the foreground. **↻ Update** forces a check.
 - Offline, the app keeps using the saved data and says so ("⚠ offline, saved 5 h ago").
 
@@ -118,9 +118,15 @@ Guidelines for plugins:
 
 ## Italy data notes
 
-- Source: [MIMIT, carburanti open data](https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-prezzi-praticati-e-anagrafica-degli-impianti). It is two `|`-separated CSVs (stations and prices), published every morning with the prices as of 08:00.
-- Some station names contain a stray `|`, and a few rows have no coordinates or placeholder prices such as `0.100`. The parser handles all of these.
-- About 50 branded product names are mapped to categories in `plugins/italy/fuels.py`. Names not listed there fall back to keyword rules, and any that still don't match are logged.
+The plugin uses two official MIMIT sources and tries them in this order:
+
+1. **Osservaprezzi API** (`carburanti.mise.gov.it/ospzApi`). `POST /search/area {"region": id}` for each of the 20 regions, one at a time with a 1.5 s pause, because parallel requests get `429 Too Many Requests`. A full fetch takes about 40 s. Prices are live, and this host is reachable from GitHub's servers.
+   - The API gives one update date per station, not per price. Each price's date is estimated from its id, since ids grow over time; `plugins/italy/osservaprezzi.py` explains how. This removes prices that are months or years old, but about 2–3.5% of stations may still show a price that is 1–8 weeks old, usually lower than the current one.
+   - Addresses come as one string (`street zip - CITY PR`) and are split. The operator name isn't available.
+2. **Open-data CSVs** ([MIMIT open data](https://www.mimit.gov.it/it/open-data/elenco-dataset/carburanti-prezzi-praticati-e-anagrafica-degli-impianti)): two `|`-separated files published every morning with the prices as of 08:00 and an exact date for every price. These are used only when the API fails. `www.mimit.gov.it` refuses connections from GitHub's servers, so on GitHub this fallback works only through a proxy. Set `FUELPRICE_IT_CSV_BASE_URL` to a mirror or URL-rewriting proxy, for example in the workflow's `env`.
+   - Some station names contain a stray `|`, and a few rows have no coordinates or placeholder prices such as `0.100`. The parser handles all of these.
+
+About 50 branded product names, the same in both sources, are mapped to categories in `plugins/italy/fuels.py`. Names not listed there fall back to keyword rules.
 
 ## Slovenia data notes
 
