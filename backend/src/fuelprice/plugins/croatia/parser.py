@@ -26,7 +26,11 @@ VRSTA: dict[int, F] = {
     26: F.CNG,  # Stlačeni prirodni plin
 }
 _PREMIUM = re.compile(r"premium|v-?power|g-?power|ultimate|excellium|imperium|platin|gold", re.I)
-_UPGRADE = {F.PETROL: F.PREMIUM_PETROL, F.DIESEL: F.PREMIUM_DIESEL}
+# Petrol is categorized by octane only (95 vs 100, as in Slovenia): premium-branded 95
+# costs about as much as regular 95, well below 100, and would split premium_petrol
+# into two price levels. Diesel has no grade in the source, so its premium products
+# are recognized by name.
+_UPGRADE = {F.DIESEL: F.PREMIUM_DIESEL}
 
 _DMS = re.compile(
     r"""^\s*(\d+(?:\.\d+)?)\s*°\s*(?:(\d+(?:\.\d+)?)\s*['′])?\s*(?:(\d+(?:\.\d+)?)\s*["″])?\s*([NSEW])?\s*$""",

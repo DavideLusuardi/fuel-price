@@ -138,6 +138,6 @@ About 50 branded product names, the same in both sources, are mapped to categori
 ## Croatia data notes
 
 - Source: `https://webservis.mzoe-gor.hr/data.gz`, the file the official site loads. `mzoe-gor.hr/data.json` is an outdated copy. `Last-Modified` gives the data date.
-- The category comes from `vrsta_goriva_id`. Brand names containing "premium", "V-Power", "G-Power" and similar move a fuel to the premium category. Heating oil, agricultural "blue" diesel, bottled LPG, bio components and EV charging are dropped.
+- The category comes from `vrsta_goriva_id`. Petrol is categorized by octane only: 95 is `petrol` and 100 is `premium_petrol`, as in Slovenia. Premium-branded 95 (e.g. "Class Plus Premium", about 1.75 €) stays `petrol`, because it costs much less than 100-octane (about 2.14 €). Diesel has no grade in the source, so diesel brand names containing "premium", "V-Power", "G-Power" and similar move it to `premium_diesel`. Heating oil, agricultural "blue" diesel, bottled LPG, bio components and EV charging are dropped.
 - Most rows have the `long` and `lat` fields swapped, so they are assigned by value range. A few coordinates use degree-minute notation (`45° 39.4112' N`), and some are empty or are a Google Maps link, which are skipped.
 - A few stations still list prices in kuna from before the euro (2023). Any station with a road-fuel price above €4.50 is treated as stale and dropped.

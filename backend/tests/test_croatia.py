@@ -43,7 +43,9 @@ def test_resolve_lat_lon_by_range():
 @pytest.mark.parametrize(("vrsta", "name", "expected"), [
     (1, "EUROSUPER 95 CLASS PLUS", F.PETROL),
     (2, "Eurosuper BS 95", F.PETROL),
-    (1, "EUROSUPER 95 CLASS PLUS PREMIUM", F.PREMIUM_PETROL),
+    # Petrol goes by octane, like in Slovenia: premium-branded 95 is still 95.
+    (1, "EUROSUPER 95 CLASS PLUS PREMIUM", F.PETROL),
+    (1, "EUROSUPER 95 G-POWER", F.PETROL),
     (5, "Q MAX EUROSUPER 100", F.PREMIUM_PETROL),
     (6, "Eurosuper 100 BS", F.PREMIUM_PETROL),
     (7, "EURODIZEL CLASS PLUS", F.DIESEL),
