@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fuel Price Map</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛽</text></svg>" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>⛽ Fuel prices</h1>
+      <div class="field">
+        <span>Countries</span>
+        <details id="countries" class="multi">
+          <summary id="countries-summary">…</summary>
+          <div id="countries-menu" class="menu" role="group" aria-label="Countries"></div>
+        </details>
+      </div>
+      <label>Fuel <select id="fuel"></select></label>
+      <div id="service" class="segmented" role="radiogroup" aria-label="Service mode">
+        <button type="button" data-value="self" aria-pressed="true">Self</button>
+        <button type="button" data-value="attended" aria-pressed="false">Attended</button>
+      </div>
+      <button type="button" id="locate" title="Show my location">◎ Near me</button>
+      <button type="button" id="refresh" title="Check for new price data now">↻ Update</button>
+      <span id="status" class="status"></span>
+    </header>
+    <main>
+      <div id="map"></div>
+      <aside id="panel" class="panel">
+        <button type="button" id="panel-toggle" class="panel-toggle" aria-expanded="true">Cheapest in view</button>
+        <ol id="cheapest"></ol>
+        <div id="legend" class="legend"></div>
+      </aside>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

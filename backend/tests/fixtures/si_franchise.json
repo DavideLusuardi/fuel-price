@@ -1,0 +1,14 @@
+[
+ {
+  "pk": 2,
+  "name": "MOL & INA d.o.o.",
+  "marker": "https://goriva.si/media/images/markers/mol_IuiCFzK.png",
+  "marker_hover": "https://goriva.si/media/images/markers/mol_O9IOH2X.png"
+ },
+ {
+  "pk": 5,
+  "name": "Shell Adria d.o.o.",
+  "marker": "https://goriva.si/media/images/markers/Shell_Icon_Marker2-02.png",
+  "marker_hover": "https://goriva.si/media/images/markers/Shell_Icon_Marker2-02_6GShYSj.png"
+ }
+]

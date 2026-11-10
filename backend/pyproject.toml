@@ -1,0 +1,33 @@
+[project]
+name = "fuelprice"
+version = "0.1.0"
+description = "Fuel station price map with pluggable country data sources"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2.8",
+    "tzdata>=2024.1",
+]
+
+[project.scripts]
+fuelprice-build = "fuelprice.build:main"
+
+[project.entry-points."fuelprice.countries"]
+it = "fuelprice.plugins.italy:ItalyPlugin"
+si = "fuelprice.plugins.slovenia:SloveniaPlugin"
+hr = "fuelprice.plugins.croatia:CroatiaPlugin"
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "respx>=0.21"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fuelprice"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]

@@ -1,0 +1,71 @@
+# Fetches fresh fuel prices from every country plugin and publishes the static app
+# (frontend + data files) to GitHub Pages. No server runs in between.
+#
+# One-time setup: repository Settings → Pages → Source: "GitHub Actions".
+name: Update data and deploy
+
+on:
+  schedule:
+    - cron: "17 */2 * * *" # every 2 hours; the app itself re-checks data older than 4 h
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Test plugins
+        working-directory: backend
+        run: uv run --frozen pytest -q
+
+      - name: Fetch fuel data
+        working-directory: backend
+        # --previous: last published files, used to keep "unchanged since" dates and
+        # to republish the old data (marked stale) if a source is down.
+        run: >
+          uv run --frozen fuelprice-build
+          --out ../frontend/public/data
+          --previous "${{ steps.pages.outputs.base_url }}/data"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build web app
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,55 @@
+{
+ "count": 7,
+ "next": null,
+ "previous": "https://goriva.si/api/v1/search/?page=1",
+ "results": [
+  {
+   "pk": 999001,
+   "franchise": 5,
+   "name": "KOEL ONLY",
+   "address": "SERMIN 7C",
+   "lat": 45.552486,
+   "lng": 13.762092,
+   "prices": {
+    "95": null,
+    "dizel": null,
+    "98": null,
+    "100": null,
+    "dizel-premium": null,
+    "avtoplin-lpg": null,
+    "KOEL": 1.1,
+    "hvo": null,
+    "cng": null,
+    "lng": null
+   },
+   "distance": null,
+   "direction": "",
+   "open_hours": "24 ur - črpalka brez osebja",
+   "zip_code": "6000"
+  },
+  {
+   "pk": 999002,
+   "franchise": 5,
+   "name": "NO COORDS",
+   "address": "MIRCE 20",
+   "lat": null,
+   "lng": null,
+   "prices": {
+    "95": 0.001,
+    "dizel": 1.848,
+    "98": null,
+    "100": null,
+    "dizel-premium": null,
+    "avtoplin-lpg": null,
+    "KOEL": null,
+    "hvo": null,
+    "cng": null,
+    "lng": null
+   },
+   "distance": null,
+   "direction": "",
+   "open_hours": "24 ur - črpalka brez osebja",
+   "zip_code": "5270"
+  }
+ ]
+}
