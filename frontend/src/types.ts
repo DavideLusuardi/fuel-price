@@ -21,25 +21,30 @@ export interface CountryMeta {
   stale: boolean;
   error: string | null;
   station_count: number;
+  /** Prices flagged as probably wrong by the data build (missing in older meta.json). */
+  suspect_count?: number;
   categories: FuelCategory[];
   data_date: string | null;
   fetched_at: string | null;
 }
 
 export interface Meta {
-  v: 1;
+  v: 1 | 2;
   generated_at: string;
   countries: CountryMeta[];
 }
 
-/** [product_index, price, self (1 | 0 | null), updated_at (unix s) | null, seen_since (unix s) | null] */
-export type PriceTuple = [number, number, 0 | 1 | null, number | null, number | null];
+/**
+ * [product_index, price, self (1 | 0 | null), updated_at (unix s) | null, seen_since (unix s) | null, suspect (1 | 0)]
+ * `suspect` (format v2+) marks prices far off nearby ones, see backend/src/fuelprice/core/outliers.py.
+ */
+export type PriceTuple = [number, number, 0 | 1 | null, number | null, number | null, (0 | 1)?];
 
 /** [id, name, brand, operator, address, city, province, lat, lon, prices] */
 export type StationTuple = [string, string, string, string, string, string, string, number, number, PriceTuple[]];
 
 export interface CountryFile {
-  v: 1;
+  v: 1 | 2;
   data_date: string | null;
   fetched_at: string;
   products: [string, FuelCategory][];
@@ -85,6 +90,8 @@ export interface Price {
   updated_at: Date | null;
   /** For sources without timestamps: since when the price has been observed unchanged. */
   seen_since: Date | null;
+  /** Far off nearby prices, probably wrong: left out of the map. */
+  suspect: boolean;
 }
 
 export interface Station {

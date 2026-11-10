@@ -34,6 +34,9 @@ class Price(BaseModel):
         default=None,
         description="For sources without timestamps: first time the build saw this exact price",
     )
+    suspect: bool = Field(
+        default=False, description="Far off nearby prices, probably wrong; left out of the map (see core/outliers.py)"
+    )
 
 
 class Station(BaseModel):

@@ -129,7 +129,7 @@ export class PriceMap {
     return L.divIcon({
       className: "price-cluster",
       html: `<div style="border-color:${this.color(min)}"><small>from</small><b style="color:${this.color(min)}">${shortPrice(min)}</b><small>${count} stations</small></div>`,
-      iconSize: [72, 50],
+      iconSize: [52, 40],
     });
   }
 
@@ -171,19 +171,26 @@ export class PriceMap {
         : null;
 
     // One row per product, with self and attended columns.
-    type Entry = { category: FuelCategory; self?: number; attended?: number; any?: number; date: Date | null };
+    type Cell = { price: number; suspect: boolean };
+    type Entry = { category: FuelCategory; self?: Cell; attended?: Cell; any?: Cell; date: Date | null };
     const products = new Map<string, Entry>();
     for (const p of s.prices) {
       const entry: Entry = products.get(p.product) ?? { category: p.category, date: null };
-      if (p.self_service === true) entry.self = p.price;
-      else if (p.self_service === false) entry.attended = p.price;
-      else entry.any = p.price;
+      const c: Cell = { price: p.price, suspect: p.suspect };
+      if (p.self_service === true) entry.self = c;
+      else if (p.self_service === false) entry.attended = c;
+      else entry.any = c;
       const d = dateKind === "updated" ? p.updated_at : p.seen_since;
       // Newest update; for "since", the most recent change of any mode.
       if (d && (!entry.date || d > entry.date)) entry.date = d;
       products.set(p.product, entry);
     }
-    const cell = (v?: number) => (v === undefined ? "–" : formatPrice(v, currency));
+    const cell = (c?: Cell) =>
+      c === undefined
+        ? "–"
+        : c.suspect
+          ? `<span class="suspect" title="Far from nearby prices, probably wrong: not shown on the map">${formatPrice(c.price, currency)} ⚠</span>`
+          : formatPrice(c.price, currency);
     const rows = [...products.entries()]
       .sort(([, a], [, b]) => Number(b.category === selected) - Number(a.category === selected))
       .map(([name, e]) => {

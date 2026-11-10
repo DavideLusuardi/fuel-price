@@ -37,6 +37,30 @@ def test_encode_decode_round_trip():
     assert decode_country(json.loads(json.dumps(doc))) == ds
 
 
+def test_encode_decode_keeps_suspect_flag():
+    ds = make_dataset()
+    ds.stations[1].prices[0].suspect = True
+    assert decode_country(json.loads(json.dumps(encode_country(ds)))) == ds
+
+
+def test_decode_reads_version_1_files_without_suspect_flag():
+    doc = encode_country(make_dataset())
+    doc["v"] = 1
+    for station in doc["stations"]:
+        station[9] = [price[:5] for price in station[9]]
+    assert decode_country(doc) == make_dataset()
+
+
+async def test_build_flags_suspect_prices(tmp_path):
+    ds = make_dataset()
+    ds.stations[1].prices[0].price = 0.18  # diesel self, typo for 1.80
+    meta = await build(tmp_path, {"zz": FakePlugin(ds)})
+    assert meta["countries"][0]["suspect_count"] == 1
+    out = decode_country(json.loads((tmp_path / "zz.json").read_text()))
+    assert [p.suspect for s in out.stations for p in s.prices].count(True) == 1
+    assert out.stations[1].prices[0].suspect
+
+
 async def test_build_writes_country_files_and_meta(tmp_path):
     meta = await build(tmp_path, {"zz": FakePlugin()})
     [entry] = meta["countries"]

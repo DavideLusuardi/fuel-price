@@ -29,7 +29,8 @@ export class CountryIndex {
     const rows: MapRow[] = [];
     for (const [id, name, brand, , , , , lat, lon, prices] of this.file.stations) {
       let best: { price: number; product: string } | null = null;
-      for (const [pi, price, self, updated] of prices) {
+      for (const [pi, price, self, updated, , suspect] of prices) {
+        if (suspect) continue;
         if (products[pi][1] !== fuel) continue;
         if (mode !== "any" && self !== (mode === "self" ? 1 : 0)) continue;
         if (this.oldestAllowed !== null && updated !== null && updated < this.oldestAllowed) continue;
@@ -50,13 +51,14 @@ export class CountryIndex {
     const date = (t: number | null) => (t === null ? null : new Date(t * 1000));
     return {
       id: sid, name, brand, operator, address, city, province, lat, lon,
-      prices: prices.map(([pi, price, self, updated, since]) => ({
+      prices: prices.map(([pi, price, self, updated, since, suspect]) => ({
         product: this.file.products[pi][0],
         category: this.file.products[pi][1],
         price,
         self_service: self === null ? null : self === 1,
         updated_at: date(updated),
         seen_since: date(since),
+        suspect: suspect === 1,
       })),
     };
   }

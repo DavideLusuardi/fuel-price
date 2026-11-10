@@ -9,9 +9,10 @@ Country file::
     {"v": 1, "data_date": "2026-11-09" | null, "fetched_at": "<iso>",
      "products": [[name, category], ...],
      "stations": [[id, name, brand, operator, address, city, province, lat, lon,
-                   [[product_index, price, self (1 | 0 | null), updated_at, seen_since], ...]], ...]}
+                   [[product_index, price, self (1 | 0 | null), updated_at, seen_since, suspect (1 | 0)], ...]], ...]}
 
-``updated_at`` and ``seen_since`` are Unix timestamps in seconds, or null.
+``updated_at`` and ``seen_since`` are Unix timestamps in seconds, or null. ``suspect``
+marks prices that look wrong (see ``core/outliers.py``); version 1 files lack it.
 Keep ``frontend/src/types.ts`` in sync with this format.
 """
 
@@ -23,7 +24,8 @@ from typing import Any
 
 from fuelprice.core.models import Dataset, FuelCategory, Price, Station
 
-FORMAT_VERSION = 1
+FORMAT_VERSION = 2
+READABLE_VERSIONS = (1, 2)
 
 
 def _ts(dt: datetime | None) -> int | None:
@@ -42,7 +44,7 @@ def encode_country(dataset: Dataset) -> dict[str, Any]:
         for p in s.prices:
             idx = products.setdefault((p.product, p.category), len(products))
             self_flag = None if p.self_service is None else int(p.self_service)
-            prices.append([idx, p.price, self_flag, _ts(p.updated_at), _ts(p.seen_since)])
+            prices.append([idx, p.price, self_flag, _ts(p.updated_at), _ts(p.seen_since), int(p.suspect)])
         stations.append([
             s.id, s.name, s.brand, s.operator, s.address, s.city, s.province,
             round(s.lat, 6), round(s.lon, 6), prices,
@@ -57,7 +59,7 @@ def encode_country(dataset: Dataset) -> dict[str, Any]:
 
 
 def decode_country(doc: dict[str, Any]) -> Dataset:
-    if doc.get("v") != FORMAT_VERSION:
+    if doc.get("v") not in READABLE_VERSIONS:
         raise ValueError(f"Unsupported data format version {doc.get('v')!r}")
     products = [(name, FuelCategory(cat)) for name, cat in doc["products"]]
     stations = []
@@ -73,8 +75,9 @@ def decode_country(doc: dict[str, Any]) -> Dataset:
                     self_service=None if self_flag is None else bool(self_flag),
                     updated_at=_dt(updated),
                     seen_since=_dt(since),
+                    suspect=bool(rest and rest[0]),
                 )
-                for idx, price, self_flag, updated, since in prices
+                for idx, price, self_flag, updated, since, *rest in prices
             ],
         ))
     return Dataset(

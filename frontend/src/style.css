@@ -86,12 +86,12 @@ main { position: relative; flex: 1; min-height: 0; }
 
 .price-cluster { background: none; border: none; }
 .price-cluster div {
-  width: 72px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: #fff; border: 3px solid; border-radius: 12px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  width: 52px; height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: #fff; border: 2px solid; border-radius: 10px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   line-height: 1.1;
 }
-.price-cluster b { font-size: 14px; font-variant-numeric: tabular-nums; }
-.price-cluster small { font-size: 9px; color: var(--muted); }
+.price-cluster b { font-size: 12px; font-variant-numeric: tabular-nums; }
+.price-cluster small { font-size: 8px; color: var(--muted); }
 
 /* -- popup ---------------------------------------------------------------- */
 .popup h3 { margin: 0 0 2px; font-size: 15px; }
@@ -104,6 +104,7 @@ main { position: relative; flex: 1; min-height: 0; }
 .popup thead th { color: var(--muted); font-weight: 500; }
 .popup tr.selected { background: #eff6ff; font-weight: 700; }
 .popup tr.old td.age { color: var(--warn); }
+.popup .suspect { color: var(--muted); text-decoration: line-through; cursor: help; }
 .popup td.age { color: var(--muted); font-size: 11px; }
 
 /* -- side panel ----------------------------------------------------------- */

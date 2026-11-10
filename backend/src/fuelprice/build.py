@@ -22,6 +22,7 @@ from typing import Any
 import httpx
 
 from fuelprice.core.models import Dataset, FuelCategory
+from fuelprice.core.outliers import flag_outliers
 from fuelprice.core.plugin import CountryPlugin
 from fuelprice.core.registry import discover_plugins
 from fuelprice.export import FORMAT_VERSION, decode_country, dumps, encode_country
@@ -98,9 +99,13 @@ async def build_country(
         log.exception("[%s] fetch failed", plugin.code)
         if prev is None:
             return {**meta, "file": None, "hash": None, "stale": True, "error": error,
-                    "station_count": 0, "categories": [], "data_date": None, "fetched_at": None}
+                    "station_count": 0, "suspect_count": 0, "categories": [], "data_date": None, "fetched_at": None}
         dataset, stale = prev, True
         log.warning("[%s] republishing previous data from %s", plugin.code, prev.fetched_at)
+
+    suspect = flag_outliers(dataset, plugin.max_price_age)
+    total = sum(len(s.prices) for s in dataset.stations)
+    log.info("[%s] %d of %d prices look wrong and are left out of the map", plugin.code, suspect, total)
 
     body = dumps(encode_country(dataset))
     file = f"{plugin.code}.json"
@@ -114,6 +119,7 @@ async def build_country(
         "stale": stale,
         "error": error,
         "station_count": len(dataset.stations),
+        "suspect_count": suspect,
         "categories": [c.value for c in FuelCategory if c in present],
         "data_date": dataset.data_date.isoformat() if dataset.data_date else None,
         "fetched_at": dataset.fetched_at.isoformat(),

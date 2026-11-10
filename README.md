@@ -65,6 +65,7 @@ cd backend && uv run pytest
 ## Price dates
 
 - Prices that haven't been updated for more than `max_price_age` (7 days by default) are left out of the map and the rankings. They still appear in the station popup, marked as old.
+- Prices that look wrong are left out of the map and the rankings too, and shown crossed out in the popup. The build compares each price with nearby stations selling the same fuel in the same service mode. A price is flagged if it is more than 12% below their median and no nearby station has about the same price (so real local price levels, like duty-free Livigno, are kept), or if it is more than twice the median (typos). CNG and LNG prices vary much more between stations, so for them the margin is 35% instead of 12%. The rules and thresholds are in `backend/src/fuelprice/core/outliers.py`. The build log shows how many prices were flagged per country.
 - Slovenia and Croatia publish no per-price dates, so the build records them itself. Each price gets the time a build first saw it at its current value (`seen_since`), and the popup shows this as **"Unchanged since"**. This history builds up from the first deployment, so on day one every price shows that day. These observed dates don't remove prices from the map. Regulated prices often stay unchanged for weeks, so that wouldn't be a sign the price is outdated.
 
 ## Adding a country
