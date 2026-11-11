@@ -1,7 +1,7 @@
 # Fuel price map
 
 A web map of fuel stations showing the price of the selected fuel. Each country's data
-source is a **plugin**. Five countries ship today:
+source is a **plugin**. Six countries ship today:
 
 | Country | Source | Stations | Notes |
 |---|---|---|---|
@@ -10,6 +10,7 @@ source is a **plugin**. Five countries ship today:
 | Hrvatska (`hr`) | mzoe-gor.hr (Ministry of Economy), gzipped JSON | ~870 | one price per fuel, no timestamps |
 | France (`fr`) | prix-carburants open data (Ministry of the Economy), zipped XML | ~9,400 | refreshed every ~10 min, exact per-price dates, no station names or brands |
 | España (`es`) | Ministry for the Ecological Transition (MITECO) REST service, JSON | ~11,500 | refreshed every 30 min, one price per fuel, no timestamps |
+| Ísland (`is`) | gasvaktin (community scraper of the companies' websites), JSON on GitHub | ~245 | prices in ISK, 95 petrol and diesel only, no timestamps |
 
 There is no server. The app is a static site that reads pre-built data files:
 
@@ -68,7 +69,7 @@ cd backend && uv run pytest
 
 - Prices that haven't been updated for more than `max_price_age` (7 days by default) are left out of the map and the rankings. They still appear in the station popup, marked as old.
 - Prices that look wrong are left out of the map and the rankings too, and shown crossed out in the popup. The build compares each price with nearby stations selling the same fuel in the same service mode. A price is flagged if it is more than 12% below their median and no nearby station has about the same price (so real local price levels, like duty-free Livigno, are kept), or if it is more than twice the median (typos). CNG and LNG prices vary much more between stations, so for them the margin is 35% instead of 12%. A plugin can widen the 12% with `outlier_low` where real low prices are common: Spain uses 25% for its discount chains. The rules and thresholds are in `backend/src/fuelprice/core/outliers.py`. The build log shows how many prices were flagged per country.
-- Slovenia and Croatia publish no per-price dates, so the build records them itself. Each price gets the time a build first saw it at its current value (`seen_since`), and the popup shows this as **"Unchanged since"**. This history builds up from the first deployment, so on day one every price shows that day. These observed dates don't remove prices from the map. Regulated prices often stay unchanged for weeks, so that wouldn't be a sign the price is outdated.
+- Slovenia, Croatia, Spain and Iceland publish no per-price dates, so the build records them itself. Each price gets the time a build first saw it at its current value (`seen_since`), and the popup shows this as **"Unchanged since"**. This history builds up from the first deployment, so on day one every price shows that day. These observed dates don't remove prices from the map. Regulated prices often stay unchanged for weeks, so that wouldn't be a sign the price is outdated.
 
 ## Adding a country
 
@@ -160,3 +161,9 @@ About 50 branded product names, the same in both sources, are mapped to categori
 - Petrol goes by octane: 95 (E5, E10 and "95 E5 Premium") is `petrol`, 98 is `premium_petrol`. `Gasoleo Premium` is premium diesel, `Diésel Renovable` is HVO, and biogas is CNG or LNG. E25, E85, renewable petrol, bioethanol and biodiesel go to "other". Agricultural diesel (`Gasoleo B`), AdBlue, hydrogen, methanol and ammonia are dropped.
 - `Rótulo` (the sign over the station) is used as the station name. There is no separate brand or operator field.
 - Spain has many discount chains (Ballenoil, Alcampo, bonÀrea, Plenergy...) pricing 12–25% below their neighbours. With the default 12% outlier margin, about 220 of their real prices were hidden, so Spain uses `outlier_low = 0.25`. About 6 prices are still flagged.
+
+## Iceland data notes
+
+- Iceland has no official price feed. The source is [gasvaktin](https://github.com/gasvaktin/gasvaktin) (MIT licence). It scrapes the websites of every fuel company (Atlantsolía, Costco, N1, Olís, ÓB, Orkan) several times a day and commits `vaktin/gas.min.json`, which the plugin downloads from `raw.githubusercontent.com`.
+- Prices are in krónur (ISK). The euro price range used to drop placeholders (`PRICE_RANGE`, 0.3–4.5) doesn't apply, so the parser passes its own range (100–600 ISK) to `valid_price`. The app shows ISK prices with one decimal (`priceDigits` in `frontend/src/format.ts`) instead of three. When Iceland is shown together with euro countries, the legend warns that colors are not comparable.
+- Only 95 petrol and diesel are listed. The `*_discount` prices need a company's loyalty key or card and are skipped. The Costco station sells to members only.
