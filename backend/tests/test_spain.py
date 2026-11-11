@@ -134,3 +134,19 @@ async def test_fetch_http_error_is_not_retried():
         with pytest.raises(httpx.HTTPStatusError):
             await SpainPlugin().fetch(client)
     assert route.call_count == 1
+
+
+def test_tls_context_offers_the_cipher_the_server_requires():
+    # The MITECO server only accepts AES256-GCM-SHA384 (RSA key exchange), which
+    # Python's default context leaves out: without it the handshake is reset.
+    ciphers = {c["name"] for c in spain.tls_context().get_ciphers()}
+    assert "AES256-GCM-SHA384" in ciphers
+    assert "ECDHE-RSA-AES256-GCM-SHA384" in ciphers  # the defaults are kept
+
+
+@respx.mock
+async def test_fetch_keeps_the_callers_headers():
+    route = respx.get(DATA_URL).respond(200, content=_raw())
+    async with httpx.AsyncClient(headers={"User-Agent": "fuelprice-test"}) as client:
+        await SpainPlugin().fetch(client)
+    assert route.calls.last.request.headers["User-Agent"] == "fuelprice-test"
