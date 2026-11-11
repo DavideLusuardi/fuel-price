@@ -103,7 +103,7 @@ async def build_country(
         dataset, stale = prev, True
         log.warning("[%s] republishing previous data from %s", plugin.code, prev.fetched_at)
 
-    suspect = flag_outliers(dataset, plugin.max_price_age)
+    suspect = flag_outliers(dataset, plugin.max_price_age, plugin.outlier_low)
     total = sum(len(s.prices) for s in dataset.stations)
     log.info("[%s] %d of %d prices look wrong and are left out of the map", plugin.code, suspect, total)
 

@@ -8,8 +8,10 @@ from fuelprice.core.models import Dataset, FuelCategory, Price, Station
 from fuelprice.core.registry import discover_plugins
 from fuelprice.export import decode_country, encode_country
 from fuelprice.plugins.croatia import CroatiaPlugin
+from fuelprice.plugins.france import FrancePlugin
 from fuelprice.plugins.italy import ItalyPlugin
 from fuelprice.plugins.slovenia import SloveniaPlugin
+from fuelprice.plugins.spain import SpainPlugin
 from tests.fakes import NOW, FakePlugin, make_dataset
 
 
@@ -27,6 +29,8 @@ def test_registry_discovers_all_countries():
     assert isinstance(plugins["it"], ItalyPlugin)
     assert isinstance(plugins["si"], SloveniaPlugin)
     assert isinstance(plugins["hr"], CroatiaPlugin)
+    assert isinstance(plugins["fr"], FrancePlugin)
+    assert isinstance(plugins["es"], SpainPlugin)
 
 
 def test_encode_decode_round_trip():

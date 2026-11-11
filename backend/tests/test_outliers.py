@@ -37,6 +37,18 @@ def test_flags_price_far_below_neighbours():
     assert _suspects(ds) == {"s10"}
 
 
+def test_wider_low_margin_keeps_discount_price_but_still_flags_errors():
+    ds = _ds(_cluster(45.0, 11.0, [*NORMAL, 1.45, 0.90]))  # ~20% and ~50% below
+    assert flag_outliers(ds, low=0.25) == 1
+    assert _suspects(ds) == {"s11"}
+    assert flag_outliers(ds) == 2  # default margin flags both
+
+
+def test_low_margin_never_narrows_the_defaults():
+    ds = _ds(_cluster(45.0, 11.0, [*NORMAL, 1.65]))  # ~9% below
+    assert flag_outliers(ds, low=0.05) == 0
+
+
 def test_keeps_cheap_but_plausible_price():
     ds = _ds(_cluster(45.0, 11.0, [*NORMAL, 1.65]))  # ~9% below the local median
     assert flag_outliers(ds) == 0
