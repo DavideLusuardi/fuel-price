@@ -11,6 +11,7 @@ from fuelprice.plugins.croatia import CroatiaPlugin
 from fuelprice.plugins.france import FrancePlugin
 from fuelprice.plugins.iceland import IcelandPlugin
 from fuelprice.plugins.italy import ItalyPlugin
+from fuelprice.plugins.portugal import PortugalPlugin
 from fuelprice.plugins.slovenia import SloveniaPlugin
 from fuelprice.plugins.spain import SpainPlugin
 from tests.fakes import NOW, FakePlugin, make_dataset
@@ -33,6 +34,7 @@ def test_registry_discovers_all_countries():
     assert isinstance(plugins["fr"], FrancePlugin)
     assert isinstance(plugins["es"], SpainPlugin)
     assert isinstance(plugins["is"], IcelandPlugin)
+    assert isinstance(plugins["pt"], PortugalPlugin)
 
 
 def test_encode_decode_round_trip():
