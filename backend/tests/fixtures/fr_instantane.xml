@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<pdv_liste>
+  <pdv id="38230003" latitude="4574500" longitude="518300" cp="38230" pop="R">
+    <adresse>Rue des Ardennes</adresse>
+    <ville>Tignieu-Jameyzieu</ville>
+    <prix nom="Gazole" id="1" maj="2026-11-11 01:17:00" valeur="2.089" />
+    <prix nom="SP95" id="2" maj="2026-11-11 01:17:00" valeur="2.071" />
+    <prix nom="E85" id="3" maj="2026-11-11 01:17:00" valeur="0.858" />
+    <prix nom="GPLc" id="4" maj="2026-11-11 01:17:00" valeur="0.998" />
+    <prix nom="E10" id="5" maj="2026-11-11 01:17:00" valeur="1.948" />
+    <prix nom="SP98" id="6" maj="2026-11-11 01:17:00" valeur="2.079" />
+  </pdv>
+  <pdv id="33114001" latitude="4462300" longitude="-78700" cp="33114" pop="R">
+    <adresse>Avenue du Médoc ZAC Eyrialis</adresse>
+    <ville>LE BARP</ville>
+    <prix nom="Gazole" id="1" maj="2026-11-06 09:40:34" valeur="2.199" />
+    <prix nom="E10" id="5" maj="2026-11-10 05:41:47" valeur="1.999" />
+    <prix nom="SP98" id="6" maj="2026-11-10 05:41:47" valeur="2.169" />
+  </pdv>
+  <pdv id="18200011" latitude="4675200" longitude="241600" cp="18200" pop="A">
+    <adresse>Autoroute A71 - La GazonnièreSens Bourges &#8211; Clermond-Ferrand</adresse>
+    <ville>FARGE ALLICHAMPS</ville>
+    <prix nom="Gazole" id="1" maj="2026-11-11 06:51:00" valeur="2.421" />
+    <prix nom="GPLc" id="4" maj="2026-11-11 06:51:00" valeur="1.189" />
+    <prix nom="E10" id="5" maj="2026-11-11 06:51:00" valeur="2.260" />
+    <prix nom="SP98" id="6" maj="2026-11-11 06:51:00" valeur="2.360" />
+  </pdv>
+  <pdv id="69700002" latitude="4556000" longitude="481000" cp="69700" pop="R">
+    <adresse>1293 Route de Beaucaire (Ex.45 R.N. 86)</adresse>
+    <ville>LOIRE-SUR-RHôNE</ville>
+  </pdv>
+  <pdv id="20137007" latitude="4160200" longitude="927600" cp="20137" pop="R">
+    <adresse>Station TOTAL - Quartier La Poretta</adresse>
+    <ville>PORTO-VECCHIO</ville>
+    <prix nom="Gazole" id="1" maj="2026-07-28 06:28:12" valeur="2.240" />
+    <prix nom="SP95" id="2" maj="2026-07-10 19:40:00" valeur="1.990" />
+  </pdv>
+  <pdv id="74800001" latitude="4606989" longitude="630528" cp="74800" pop="R">
+    <adresse> Avenue de la Libération</adresse>
+    <ville>LA ROCHE-SUR-FORON</ville>
+    <prix nom="SP95" id="2" maj="2026-04-08 12:26:41" valeur="1.990" />
+  </pdv>
+  <pdv id="99999001" latitude="4500000" longitude="500000" cp="69001" pop="R">
+    <adresse>Rue Fictive</adresse>
+    <ville>Lyon</ville>
+    <prix nom="Gazole" id="1" maj="2026-11-10 08:00:00" valeur="0.001" />
+    <prix nom="Hydrogène" id="9" maj="2026-11-10 08:00:00" valeur="1.500" />
+    <prix nom="E10" id="5" maj="2026-11-10 08:00:00" valeur="1,899" />
+  </pdv>
+  <pdv id="99999002" latitude="" longitude="" cp="69002" pop="R">
+    <adresse>Rue Sans Coordonnées</adresse>
+    <ville>Lyon</ville>
+    <prix nom="Gazole" id="1" maj="2026-11-10 08:00:00" valeur="1.999" />
+  </pdv>
+</pdv_liste>
