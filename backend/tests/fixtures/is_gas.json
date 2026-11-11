@@ -1,0 +1,118 @@
+{
+ "stations": [
+  {
+   "bensin95": 256.3,
+   "bensin95_discount": null,
+   "company": "Atlantsolía",
+   "diesel": 314.2,
+   "diesel_discount": null,
+   "geo": {
+    "lat": 65.69913,
+    "lon": -18.135231
+   },
+   "key": "ao_000",
+   "name": "Baldursnes Akureyri"
+  },
+  {
+   "bensin95": 286.4,
+   "bensin95_discount": 276.4,
+   "company": "N1",
+   "diesel": 340.5,
+   "diesel_discount": 330.5,
+   "geo": {
+    "lat": 64.12358487,
+    "lon": -21.82642221
+   },
+   "key": "n1_000",
+   "name": "Ártúnshöfði"
+  },
+  {
+   "bensin95": 256.2,
+   "bensin95_discount": null,
+   "company": "Orkan",
+   "diesel": 314.1,
+   "diesel_discount": null,
+   "geo": {
+    "lat": 64.105243,
+    "lon": -21.867311
+   },
+   "key": "or_000",
+   "name": "Dalvegur"
+  },
+  {
+   "bensin95": 285.4,
+   "bensin95_discount": 275.4,
+   "company": "ÓB",
+   "diesel": 334.8,
+   "diesel_discount": 324.8,
+   "geo": {
+    "lat": 64.324544,
+    "lon": -22.068273
+   },
+   "key": "ob_000",
+   "name": "Akranes Esjubraut"
+  },
+  {
+   "bensin95": 287.6,
+   "bensin95_discount": 277.6,
+   "company": "Olís",
+   "diesel": 339.8,
+   "diesel_discount": 329.8,
+   "geo": {
+    "lat": 64.110291,
+    "lon": -21.842778
+   },
+   "key": "ol_000",
+   "name": "Álfabakki"
+  },
+  {
+   "bensin95": 244.4,
+   "bensin95_discount": null,
+   "company": "Costco Iceland",
+   "diesel": 299.9,
+   "diesel_discount": null,
+   "geo": {
+    "lat": 64.075267,
+    "lon": -21.915002
+   },
+   "key": "co_000",
+   "name": "Kauptún"
+  },
+  {
+   "bensin95": 270.5,
+   "bensin95_discount": null,
+   "company": "Orkan",
+   "diesel": null,
+   "diesel_discount": null,
+   "geo": {
+    "lat": 64.1,
+    "lon": -21.9
+   },
+   "key": "test_nodiesel",
+   "name": "Test án dísils"
+  },
+  {
+   "bensin95": 0,
+   "bensin95_discount": null,
+   "company": "ÓB",
+   "diesel": 3.142,
+   "diesel_discount": null,
+   "geo": {
+    "lat": 64.2,
+    "lon": -21.8
+   },
+   "key": "test_badprice",
+   "name": "Test röng verð"
+  },
+  {
+   "bensin95": 270.5,
+   "bensin95_discount": null,
+   "company": "N1",
+   "diesel": 320.0,
+   "diesel_discount": null,
+   "geo": null,
+   "key": "test_nogeo",
+   "name": "Test án hnita"
+  }
+ ]
+}

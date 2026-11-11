@@ -59,9 +59,9 @@ export class PriceMap {
     this.markers.clear();
     const layers: PriceMarker[] = data.rows.map((row) => {
       const m = L.marker([row.lat, row.lon], {
-        icon: this.markerIcon(row.price),
+        icon: this.markerIcon(row.price, row.currency),
         row,
-        title: `${row.name} – ${shortPrice(row.price)}`,
+        title: `${row.name} – ${shortPrice(row.price, row.currency)}`,
       } as PriceMarkerOptions) as PriceMarker;
       this.markers.set(rowKey(row), m);
       return m;
@@ -110,10 +110,10 @@ export class PriceMap {
     return priceColor(scale(price, this.data?.stats ?? null));
   }
 
-  private markerIcon(price: number): L.DivIcon {
+  private markerIcon(price: number, currency: string): L.DivIcon {
     return L.divIcon({
       className: "price-marker",
-      html: `<span style="--c:${this.color(price)}">${shortPrice(price)}</span>`,
+      html: `<span style="--c:${this.color(price)}">${shortPrice(price, currency)}</span>`,
       iconSize: [52, 26],
       iconAnchor: [26, 26],
       popupAnchor: [0, -24],
@@ -122,13 +122,14 @@ export class PriceMap {
 
   private clusterIcon(cluster: L.MarkerCluster): L.DivIcon {
     let min = Infinity;
+    let currency = "EUR";
     for (const m of cluster.getAllChildMarkers() as PriceMarker[]) {
-      if (m.options.row.price < min) min = m.options.row.price;
+      if (m.options.row.price < min) ({ price: min, currency } = m.options.row);
     }
     const count = cluster.getChildCount();
     return L.divIcon({
       className: "price-cluster",
-      html: `<div style="border-color:${this.color(min)}"><small>from</small><b style="color:${this.color(min)}">${shortPrice(min)}</b><small>${count} stations</small></div>`,
+      html: `<div style="border-color:${this.color(min)}"><small>from</small><b style="color:${this.color(min)}">${shortPrice(min, currency)}</b><small>${count} stations</small></div>`,
       iconSize: [52, 40],
     });
   }

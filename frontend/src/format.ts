@@ -19,18 +19,26 @@ export function unit(fuel: FuelCategory): string {
   return PER_KG.has(fuel) ? "/kg" : "/l";
 }
 
+/** Decimals shown for a currency: pump prices in euro have three; krónur have one. */
+const DIGITS: Record<string, number> = { ISK: 1 };
+
+export function priceDigits(currency: string): number {
+  return DIGITS[currency] ?? 3;
+}
+
 export function formatPrice(value: number, currency: string): string {
+  const digits = priceDigits(currency);
   return new Intl.NumberFormat(undefined, {
     style: "currency",
     currency,
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
   }).format(value);
 }
 
-/** Short price for markers, e.g. "1.849". */
-export function shortPrice(value: number): string {
-  return value.toFixed(3);
+/** Short price for markers, e.g. "1.849" or "256.3". */
+export function shortPrice(value: number, currency: string): string {
+  return value.toFixed(priceDigits(currency));
 }
 
 export function escapeHtml(s: string): string {

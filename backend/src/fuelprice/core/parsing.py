@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-# Real pump prices (per litre or kg) fall in this range. Sources use values such
-# as 0.001 / 0.100 as placeholders and sometimes list bottled-gas prices.
+# Real pump prices in euro (per litre or kg) fall in this range. Sources use values
+# such as 0.001 / 0.100 as placeholders and sometimes list bottled-gas prices.
+# Plugins of countries with another currency pass their own range to valid_price.
 PRICE_RANGE = (0.3, 4.5)
 
 
@@ -29,8 +30,8 @@ def number(value: object) -> float | None:
         return None
 
 
-def valid_price(value: object) -> float | None:
+def valid_price(value: object, price_range: tuple[float, float] = PRICE_RANGE) -> float | None:
     price = number(value)
-    if price is None or not (PRICE_RANGE[0] <= price <= PRICE_RANGE[1]):
+    if price is None or not (price_range[0] <= price <= price_range[1]):
         return None
     return price

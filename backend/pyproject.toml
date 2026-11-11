@@ -18,6 +18,7 @@ si = "fuelprice.plugins.slovenia:SloveniaPlugin"
 hr = "fuelprice.plugins.croatia:CroatiaPlugin"
 fr = "fuelprice.plugins.france:FrancePlugin"
 es = "fuelprice.plugins.spain:SpainPlugin"
+is = "fuelprice.plugins.iceland:IcelandPlugin"
 
 [dependency-groups]
 dev = ["pytest>=8", "pytest-asyncio>=0.24", "respx>=0.21"]
