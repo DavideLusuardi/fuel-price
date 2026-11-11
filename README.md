@@ -1,7 +1,7 @@
 # Fuel price map
 
 A web map of fuel stations showing the price of the selected fuel. Each country's data
-source is a **plugin**. Four countries ship today:
+source is a **plugin**. Five countries ship today:
 
 | Country | Source | Stations | Notes |
 |---|---|---|---|
@@ -9,6 +9,7 @@ source is a **plugin**. Four countries ship today:
 | Slovenija (`si`) | goriva.si JSON API | ~540 | one price per fuel, no timestamps |
 | Hrvatska (`hr`) | mzoe-gor.hr (Ministry of Economy), gzipped JSON | ~870 | one price per fuel, no timestamps |
 | France (`fr`) | prix-carburants open data (Ministry of the Economy), zipped XML | ~9,400 | refreshed every ~10 min, exact per-price dates, no station names or brands |
+| España (`es`) | Ministry for the Ecological Transition (MITECO) REST service, JSON | ~11,500 | refreshed every 30 min, one price per fuel, no timestamps |
 
 There is no server. The app is a static site that reads pre-built data files:
 
@@ -66,7 +67,7 @@ cd backend && uv run pytest
 ## Price dates
 
 - Prices that haven't been updated for more than `max_price_age` (7 days by default) are left out of the map and the rankings. They still appear in the station popup, marked as old.
-- Prices that look wrong are left out of the map and the rankings too, and shown crossed out in the popup. The build compares each price with nearby stations selling the same fuel in the same service mode. A price is flagged if it is more than 12% below their median and no nearby station has about the same price (so real local price levels, like duty-free Livigno, are kept), or if it is more than twice the median (typos). CNG and LNG prices vary much more between stations, so for them the margin is 35% instead of 12%. The rules and thresholds are in `backend/src/fuelprice/core/outliers.py`. The build log shows how many prices were flagged per country.
+- Prices that look wrong are left out of the map and the rankings too, and shown crossed out in the popup. The build compares each price with nearby stations selling the same fuel in the same service mode. A price is flagged if it is more than 12% below their median and no nearby station has about the same price (so real local price levels, like duty-free Livigno, are kept), or if it is more than twice the median (typos). CNG and LNG prices vary much more between stations, so for them the margin is 35% instead of 12%. A plugin can widen the 12% with `outlier_low` where real low prices are common: Spain uses 25% for its discount chains. The rules and thresholds are in `backend/src/fuelprice/core/outliers.py`. The build log shows how many prices were flagged per country.
 - Slovenia and Croatia publish no per-price dates, so the build records them itself. Each price gets the time a build first saw it at its current value (`seen_since`), and the popup shows this as **"Unchanged since"**. This history builds up from the first deployment, so on day one every price shows that day. These observed dates don't remove prices from the map. Regulated prices often stay unchanged for weeks, so that wouldn't be a sign the price is outdated.
 
 ## Adding a country
@@ -150,3 +151,12 @@ About 50 branded product names, the same in both sources, are mapped to categori
 - Coordinates are degrees × 100000. The feed covers mainland France and Corsica only. Stations without any price (about 470) are skipped.
 - The feed has no station names or brands. The station is named after its town, with "(autoroute)" added for motorway stations (`pop="A"`).
 - Fuels: `Gazole` → diesel, `SP95` and `E10` → petrol, `SP98` → premium petrol, `GPLc` → LPG, `E85` (superethanol) → other.
+
+## Spain data notes
+
+- Source: `https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/` ([datos.gob.es](https://datos.gob.es/en/catalogo/e05068001-precio-de-carburantes-en-las-gasolineras-espanolas)). One request returns every station (about 12 MB, about 10 s). The ministry refreshes it every half hour. The server sometimes drops connections, so a failed download is retried once.
+- `Fecha` gives the data date. There are no per-price dates, so the build records `seen_since` as for Slovenia and Croatia.
+- Numbers use a decimal comma. A few stations have `0,000000` coordinates (skipped) or latitude and longitude swapped (fixed by value range). The Canary Islands, Ceuta and Melilla are included. Their lower taxes give lower prices, which outlier detection handles because it compares only nearby stations.
+- Petrol goes by octane: 95 (E5, E10 and "95 E5 Premium") is `petrol`, 98 is `premium_petrol`. `Gasoleo Premium` is premium diesel, `Diésel Renovable` is HVO, and biogas is CNG or LNG. E25, E85, renewable petrol, bioethanol and biodiesel go to "other". Agricultural diesel (`Gasoleo B`), AdBlue, hydrogen, methanol and ammonia are dropped.
+- `Rótulo` (the sign over the station) is used as the station name. There is no separate brand or operator field.
+- Spain has many discount chains (Ballenoil, Alcampo, bonÀrea, Plenergy...) pricing 12–25% below their neighbours. With the default 12% outlier margin, about 220 of their real prices were hidden, so Spain uses `outlier_low = 0.25`. About 6 prices are still flagged.

@@ -29,6 +29,9 @@ class CountryPlugin(ABC):
     """True when the source distinguishes self-service and attended prices."""
     max_price_age: ClassVar[timedelta | None] = timedelta(days=7)
     """Prices not updated for longer than this are left out of the map (still shown in details)."""
+    outlier_low: ClassVar[float | None] = None
+    """How far below nearby prices a price may be before it is flagged as suspect, when
+    real low prices are common in the country (default: ``core.outliers.LOW``, 12%)."""
 
     @abstractmethod
     async def fetch(self, client: httpx.AsyncClient) -> Dataset:

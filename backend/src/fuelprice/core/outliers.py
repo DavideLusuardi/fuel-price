@@ -16,6 +16,9 @@ its neighbours is an error, several stations agreeing on a low price are not.
 Stations with too few neighbours are compared with the country-wide median instead,
 with a wider margin. Prices older than the plugin's ``max_price_age`` are checked but
 not used as reference, since the map hides them anyway.
+
+A plugin can widen ``LOW`` with ``CountryPlugin.outlier_low`` where real low prices are
+common, such as the discount chains in Spain.
 """
 
 from __future__ import annotations
@@ -51,8 +54,11 @@ GroupKey = tuple[FuelCategory, bool | None]
 Point = tuple[float, float, float, str]  # x km, y km, price, station id
 
 
-def flag_outliers(dataset: Dataset, max_age: timedelta | None = None) -> int:
-    """Set ``Price.suspect`` on every price of ``dataset``; returns how many are suspect."""
+def flag_outliers(dataset: Dataset, max_age: timedelta | None = None, low: float | None = None) -> int:
+    """Set ``Price.suspect`` on every price of ``dataset``; returns how many are suspect.
+
+    ``low`` replaces ``LOW`` when it is larger; the other margins never get narrower than it.
+    """
     cutoff = dataset.fetched_at - max_age if max_age is not None else None
     groups: dict[GroupKey, list[tuple[Station, Price]]] = defaultdict(list)
     for s in dataset.stations:
@@ -60,7 +66,7 @@ def flag_outliers(dataset: Dataset, max_age: timedelta | None = None) -> int:
             p.suspect = False
             groups[(p.category, p.self_service)].append((s, p))
     return sum(
-        _flag_group(entries, cutoff, wide=category in WIDE_CATEGORIES)
+        _flag_group(entries, cutoff, wide=category in WIDE_CATEGORIES, low=low)
         for (category, _), entries in groups.items()
     )
 
@@ -69,8 +75,12 @@ def _is_fresh(p: Price, cutoff: datetime | None) -> bool:
     return cutoff is None or p.updated_at is None or p.updated_at >= cutoff
 
 
-def _flag_group(entries: list[tuple[Station, Price]], cutoff: datetime | None, wide: bool = False) -> int:
+def _flag_group(
+    entries: list[tuple[Station, Price]], cutoff: datetime | None, wide: bool = False, low: float | None = None
+) -> int:
     local_low, fallback_low = (WIDE_LOW, WIDE_FALLBACK_LOW) if wide else (LOW, FALLBACK_LOW)
+    if low is not None:
+        local_low, fallback_low = max(local_low, low), max(fallback_low, low)
     refs = [(s, p) for s, p in entries if p.price > 0 and _is_fresh(p, cutoff)]
     # Equirectangular projection to km: accurate enough at country scale.
     lat0 = math.radians(sum(s.lat for s, _ in refs) / len(refs)) if refs else 0.0
