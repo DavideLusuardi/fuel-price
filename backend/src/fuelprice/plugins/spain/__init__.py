@@ -4,6 +4,10 @@ Every station must report its prices. One request returns all stations (about 12
 JSON, about 10 s), updated every half hour. There are no per-price timestamps or
 self/attended distinction. The server sometimes drops connections, so a failed
 download is retried once.
+
+The server only accepts the TLS 1.2 cipher AES256-GCM-SHA384 (RSA key exchange, no
+forward secrecy). Python's default context does not offer it, and the server resets
+the handshake, so this plugin downloads with its own client that adds that cipher.
 """
 
 from __future__ import annotations
@@ -11,6 +15,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import ssl
 
 import httpx
 
@@ -23,7 +28,16 @@ DATA_URL = (
 )
 ATTEMPTS = 2
 RETRY_DELAY = 5.0
+LEGACY_CIPHER = "AES256-GCM-SHA384"
 log = logging.getLogger(__name__)
+
+
+def tls_context() -> ssl.SSLContext:
+    """Python's default context (certificate checks included) plus the cipher the server needs."""
+    ctx = ssl.create_default_context()
+    tls12 = [c["name"] for c in ctx.get_ciphers() if c["protocol"] != "TLSv1.3"]
+    ctx.set_ciphers(":".join([*tls12, LEGACY_CIPHER]))
+    return ctx
 
 
 class SpainPlugin(CountryPlugin):
@@ -53,6 +67,9 @@ class SpainPlugin(CountryPlugin):
         raise AssertionError("unreachable")
 
     async def fetch(self, client: httpx.AsyncClient) -> Dataset:
-        content = await self._download(client)
+        # A client of its own, keeping the caller's headers (User-Agent), so the weaker
+        # cipher is only offered to this server.
+        async with httpx.AsyncClient(headers=client.headers, verify=tls_context()) as own:
+            content = await self._download(own)
         # json.loads on bytes also accepts a UTF-8 byte-order mark.
         return await asyncio.to_thread(lambda: build_dataset(json.loads(content)))
