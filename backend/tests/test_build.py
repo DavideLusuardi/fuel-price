@@ -7,6 +7,7 @@ from fuelprice.build import apply_history, build
 from fuelprice.core.models import Dataset, FuelCategory, Price, Station
 from fuelprice.core.registry import discover_plugins
 from fuelprice.export import decode_country, encode_country
+from fuelprice.plugins.austria import AustriaPlugin
 from fuelprice.plugins.croatia import CroatiaPlugin
 from fuelprice.plugins.france import FrancePlugin
 from fuelprice.plugins.iceland import IcelandPlugin
@@ -35,6 +36,7 @@ def test_registry_discovers_all_countries():
     assert isinstance(plugins["es"], SpainPlugin)
     assert isinstance(plugins["is"], IcelandPlugin)
     assert isinstance(plugins["pt"], PortugalPlugin)
+    assert isinstance(plugins["at"], AustriaPlugin)
 
 
 def test_encode_decode_round_trip():

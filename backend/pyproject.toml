@@ -20,6 +20,7 @@ fr = "fuelprice.plugins.france:FrancePlugin"
 es = "fuelprice.plugins.spain:SpainPlugin"
 is = "fuelprice.plugins.iceland:IcelandPlugin"
 pt = "fuelprice.plugins.portugal:PortugalPlugin"
+at = "fuelprice.plugins.austria:AustriaPlugin"
 
 [dependency-groups]
 dev = ["pytest>=8", "pytest-asyncio>=0.24", "respx>=0.21"]
