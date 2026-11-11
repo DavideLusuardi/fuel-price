@@ -1,18 +1,19 @@
 # Fuel price map
 
 A web map of fuel stations showing the price of the selected fuel. Each country's data
-source is a **plugin**. Three countries ship today:
+source is a **plugin**. Four countries ship today:
 
 | Country | Source | Stations | Notes |
 |---|---|---|---|
 | Italia (`it`) | MIMIT Osservaprezzi API (CSV open data as fallback) | ~21,600 | live, self/attended prices, estimated per-price dates |
 | Slovenija (`si`) | goriva.si JSON API | ~540 | one price per fuel, no timestamps |
 | Hrvatska (`hr`) | mzoe-gor.hr (Ministry of Economy), gzipped JSON | ~870 | one price per fuel, no timestamps |
+| France (`fr`) | prix-carburants open data (Ministry of the Economy), zipped XML | ~9,400 | refreshed every ~10 min, exact per-price dates, no station names or brands |
 
 There is no server. The app is a static site that reads pre-built data files:
 
 ```
- sources (MIMIT, goriva.si, mzoe-gor)          GitHub Actions, every 2 h
+ sources (one per country plugin)              GitHub Actions, every 2 h
         │                                     ┌──────────────────────────────┐
         └──────────────► fuelprice-build ────►│ data/meta.json, it.json, ... │
                          (Python plugins)     └──────────────┬───────────────┘
@@ -141,3 +142,11 @@ About 50 branded product names, the same in both sources, are mapped to categori
 - The category comes from `vrsta_goriva_id`. Petrol is categorized by octane only: 95 is `petrol` and 100 is `premium_petrol`, as in Slovenia. Premium-branded 95 (e.g. "Class Plus Premium", about 1.75 €) stays `petrol`, because it costs much less than 100-octane (about 2.14 €). Diesel has no grade in the source, so diesel brand names containing "premium", "V-Power", "G-Power" and similar move it to `premium_diesel`. Heating oil, agricultural "blue" diesel, bottled LPG, bio components and EV charging are dropped.
 - Most rows have the `long` and `lat` fields swapped, so they are assigned by value range. A few coordinates use degree-minute notation (`45° 39.4112' N`), and some are empty or are a Google Maps link, which are skipped.
 - A few stations still list prices in kuna from before the euro (2023). Any station with a road-fuel price above €4.50 is treated as stale and dropped.
+
+## France data notes
+
+- Source: `https://donnees.roulez-eco.fr/opendata/instantane`, the official "flux instantané" ([data.gouv.fr](https://www.data.gouv.fr/datasets/prix-des-carburants-en-france-flux-instantane-v2-amelioree), Licence Ouverte). It is a ZIP with one ISO-8859-1 XML file, refreshed about every 10 minutes. Stations are required by law to report every price change (arrêté of 12 December 2006).
+- Each price has its own update time (`maj`, Paris local time). Prices that haven't changed are not re-reported, so the 7-day `max_price_age` hides about 10% of prices, mostly at stations that seem to have stopped reporting (about 770 of 9,400 stations have no price newer than 7 days). LPG and E85 change less often and are hit more.
+- Coordinates are degrees × 100000. The feed covers mainland France and Corsica only. Stations without any price (about 470) are skipped.
+- The feed has no station names or brands. The station is named after its town, with "(autoroute)" added for motorway stations (`pop="A"`).
+- Fuels: `Gazole` → diesel, `SP95` and `E10` → petrol, `SP98` → premium petrol, `GPLc` → LPG, `E85` (superethanol) → other.

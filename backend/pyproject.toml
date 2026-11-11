@@ -16,6 +16,7 @@ fuelprice-build = "fuelprice.build:main"
 it = "fuelprice.plugins.italy:ItalyPlugin"
 si = "fuelprice.plugins.slovenia:SloveniaPlugin"
 hr = "fuelprice.plugins.croatia:CroatiaPlugin"
+fr = "fuelprice.plugins.france:FrancePlugin"
 
 [dependency-groups]
 dev = ["pytest>=8", "pytest-asyncio>=0.24", "respx>=0.21"]
