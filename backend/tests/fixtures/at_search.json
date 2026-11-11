@@ -1,0 +1,334 @@
+{
+ "101/SUP": [
+  {
+   "id": 1474414,
+   "name": "Diskont Tankstelle",
+   "location": {
+    "address": "Haidäckerstrasse 4 (am HOFER Parkplatz)",
+    "postalCode": "7000",
+    "city": "Eisenstadt",
+    "latitude": 47.825,
+    "longitude": 16.5319
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 1.639,
+     "label": "Super 95"
+    }
+   ]
+  },
+  {
+   "id": 1354680,
+   "name": "JET TANKSTELLE",
+   "location": {
+    "address": "MATTERSBURGERSTR. 48",
+    "postalCode": "7000",
+    "city": "EISENSTADT",
+    "latitude": 47.829222,
+    "longitude": 16.521694
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 1.644,
+     "label": "Super 95"
+    }
+   ]
+  },
+  {
+   "id": 1214419,
+   "name": "CP - so günstig wie möglich",
+   "location": {
+    "address": "Wiener Straße 36-38",
+    "postalCode": "7000",
+    "city": "Eisenstadt",
+    "latitude": 47.8449265,
+    "longitude": 16.50778
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 1.648,
+     "label": "Super 95"
+    }
+   ]
+  },
+  {
+   "id": 1471167,
+   "name": "Direct",
+   "location": {
+    "address": "Mattersburger Straße 5",
+    "postalCode": "7000",
+    "city": "Eisenstadt",
+    "latitude": 47.8359,
+    "longitude": 16.52446
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 1.658,
+     "label": "Super 95"
+    }
+   ]
+  },
+  {
+   "id": 449828,
+   "name": "Shell Austria",
+   "location": {
+    "address": "NEUSIEDLER STRASSE 82",
+    "postalCode": "7000",
+    "city": "EISENSTADT",
+    "latitude": 47.84621,
+    "longitude": 16.54064
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 1.659,
+     "label": "Super 95"
+    }
+   ]
+  }
+ ],
+ "101/DIE": [
+  {
+   "id": 1214419,
+   "name": "CP - so günstig wie möglich",
+   "location": {
+    "address": "Wiener Straße 36-38",
+    "postalCode": "7000",
+    "city": "Eisenstadt",
+    "latitude": 47.8449265,
+    "longitude": 16.50778
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "DIE",
+     "amount": 2.038,
+     "label": "Diesel"
+    }
+   ]
+  },
+  {
+   "id": 42886,
+   "name": "Tanke Blaguss",
+   "location": {
+    "address": "Industriestraße",
+    "postalCode": "7000",
+    "city": "Eisenstadt",
+    "latitude": 47.8328353,
+    "longitude": 16.5336044
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "DIE",
+     "amount": 2.039,
+     "label": "Diesel"
+    }
+   ]
+  },
+  {
+   "id": 1471167,
+   "name": "Direct",
+   "location": {
+    "address": "Mattersburger Straße 5",
+    "postalCode": "7000",
+    "city": "Eisenstadt",
+    "latitude": 47.8359,
+    "longitude": 16.52446
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "DIE",
+     "amount": 2.048,
+     "label": "Diesel"
+    }
+   ]
+  },
+  {
+   "id": 1354680,
+   "name": "JET TANKSTELLE",
+   "location": {
+    "address": "MATTERSBURGERSTR. 48",
+    "postalCode": "7000",
+    "city": "EISENSTADT",
+    "latitude": 47.829222,
+    "longitude": 16.521694
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "DIE",
+     "amount": 2.069,
+     "label": "Diesel"
+    }
+   ]
+  },
+  {
+   "id": 449828,
+   "name": "Shell Austria",
+   "location": {
+    "address": "NEUSIEDLER STRASSE 82",
+    "postalCode": "7000",
+    "city": "EISENSTADT",
+    "latitude": 47.84621,
+    "longitude": 16.54064
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "DIE",
+     "amount": 2.079,
+     "label": "Diesel"
+    }
+   ]
+  }
+ ],
+ "101/GAS": [],
+ "901/SUP": [
+  {
+   "id": 35567,
+   "name": "BP",
+   "location": {
+    "address": "Franz Josefskai/Morzinpl ",
+    "postalCode": "1010",
+    "city": "Wien",
+    "latitude": 48.2123537,
+    "longitude": 16.3743119
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 1.719,
+     "label": "Super 95"
+    }
+   ]
+  }
+ ],
+ "901/DIE": [
+  {
+   "id": 35567,
+   "name": "BP",
+   "location": {
+    "address": "Franz Josefskai/Morzinpl ",
+    "postalCode": "1010",
+    "city": "Wien",
+    "latitude": 48.2123537,
+    "longitude": 16.3743119
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "DIE",
+     "amount": 2.159,
+     "label": "Diesel"
+    }
+   ]
+  },
+  {
+   "id": 45247,
+   "name": "Meine Marke",
+   "location": {
+    "address": "Rudolfsplatz 13a",
+    "postalCode": "1010",
+    "city": "Wien",
+    "latitude": 1.112233,
+    "longitude": 1.112233
+   },
+   "open": false,
+   "prices": [
+    {
+     "fuelType": "DIE",
+     "amount": 4,
+     "label": "Diesel"
+    }
+   ]
+  }
+ ],
+ "901/GAS": [],
+ "401/GAS": [
+  {
+   "id": 284,
+   "name": "OMV - Linz Hafenstraße 8",
+   "location": {
+    "address": "Hafenstrasse 8",
+    "postalCode": "4020",
+    "city": "Linz",
+    "latitude": 48.31554,
+    "longitude": 14.30166
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "GAS",
+     "amount": 1.799,
+     "label": "CNG"
+    }
+   ]
+  }
+ ],
+ "401/SUP": [
+  {
+   "id": 999001,
+   "name": "Placeholder",
+   "location": {
+    "address": "A",
+    "postalCode": "4020",
+    "city": "Linz",
+    "latitude": 48.3,
+    "longitude": 14.29
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 0.001,
+     "label": "Super 95"
+    }
+   ]
+  },
+  {
+   "id": 999002,
+   "name": "No coordinates",
+   "location": {
+    "address": "B",
+    "postalCode": "4020",
+    "city": "Linz",
+    "latitude": 0,
+    "longitude": 0
+   },
+   "open": true,
+   "prices": [
+    {
+     "fuelType": "SUP",
+     "amount": 1.7,
+     "label": "Super 95"
+    }
+   ]
+  },
+  {
+   "id": 999003,
+   "name": "No price",
+   "location": {
+    "address": "C",
+    "postalCode": "4020",
+    "city": "Linz",
+    "latitude": 48.31,
+    "longitude": 14.28
+   },
+   "open": false,
+   "prices": []
+  }
+ ],
+ "401/DIE": []
+}

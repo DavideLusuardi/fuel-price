@@ -1,7 +1,7 @@
 # Fuel price map
 
 A web map of fuel stations showing the price of the selected fuel. Each country's data
-source is a **plugin**. Seven countries ship today:
+source is a **plugin**. Eight countries ship today:
 
 | Country | Source | Stations | Notes |
 |---|---|---|---|
@@ -12,6 +12,7 @@ source is a **plugin**. Seven countries ship today:
 | España (`es`) | Ministry for the Ecological Transition (MITECO) REST service, JSON | ~11,500 | refreshed every 30 min, one price per fuel, no timestamps |
 | Ísland (`is`) | gasvaktin (community scraper of the companies' websites), JSON on GitHub | ~245 | prices in ISK, 95 petrol and diesel only, no timestamps |
 | Portugal (`pt`) | DGEG "Preços dos Combustíveis Online" (undocumented JSON API) | ~3,200 | live, exact per-price dates, one request per fuel |
+| Österreich (`at`) | E-Control Spritpreisrechner API | ~880 | **partial**: only the 5 cheapest stations per district and fuel, no brands, no timestamps |
 
 There is no server. The app is a static site that reads pre-built data files:
 
@@ -177,3 +178,13 @@ About 50 branded product names, the same in both sources, are mapped to categori
 - Fuel type ids: 3201 Gasolina simples 95 and 3205 Gasolina especial 95 → petrol (by octane), 3400 Gasolina 98 and 3405 Gasolina especial 98 → premium petrol, 2101 Gasóleo simples → diesel, 2105 Gasóleo especial → premium diesel, 1120 GPL Auto → LPG, 1143 GNC (€/kg) → CNG, 1142 GNL (€/kg) → LNG, 2115 Biodiesel B15 → other. Coloured (agricultural) diesel, heating oil, two-stroke mix and CNG priced per m³ are not requested.
 - The brand `Genérico` (unbranded) is left empty.
 - Discount stations (Intermarché, independents) often sell 12–20% below their neighbours. With the default margin, about 25 of their prices were hidden, so Portugal uses `outlier_low = 0.20`. About 1 price is still flagged.
+
+## Austria data notes
+
+- Source: the [E-Control](https://www.e-control.at/) Spritpreisrechner API (`https://api.e-control.at/sprit/1.0`), data © E-Control. Stations must report every price change, but the public API only shows the cheapest ones, and E-Control publishes no licence or terms for it.
+- **The data is partial.** `GET /search/gas-stations/by-region?code=<district>&type=PB&fuelType=<SUP|DIE|GAS>&includeClosed=true` returns at most five stations with a price. The build searches each of the 117 political districts (`/regions`; Vienna counts its 23 Bezirke) for each fuel, about 350 requests, 4 at a time, and merges the results by station `id`. That gives about 880 of Austria's roughly 2,800 stations: the cheapest ones in every district, which is what the map is for, but expensive stations are missing.
+- `includeClosed=true` keeps stations that are closed at build time (the build runs at night too). Stations without a price are dropped.
+- Fuel types: SUP (Super 95) → petrol, DIE → diesel, GAS (CNG, €/kg) → CNG. Premium grades are not in the API.
+- There are no brands (the station name often contains one) and no price timestamps, so dates come from the build's own history.
+- The source contains test entries such as "Meine Marke" at (1.11, 1.11) with a price of 4 €. Coordinates outside Austria drop them.
+- Austrian stations may only raise prices once a day at noon, so prices change less often than in other countries.

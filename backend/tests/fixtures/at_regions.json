@@ -1,0 +1,41 @@
+[
+ {
+  "code": 1,
+  "type": "BL",
+  "name": "Burgenland",
+  "subRegions": [
+   {
+    "code": 101,
+    "type": "PB",
+    "name": "Eisenstadt(Stadt)",
+    "subRegions": []
+   }
+  ]
+ },
+ {
+  "code": 4,
+  "type": "BL",
+  "name": "Oberösterreich",
+  "subRegions": [
+   {
+    "code": 401,
+    "type": "PB",
+    "name": "Stadt Linz",
+    "subRegions": []
+   }
+  ]
+ },
+ {
+  "code": 9,
+  "type": "BL",
+  "name": "Wien",
+  "subRegions": [
+   {
+    "code": 901,
+    "type": "PB",
+    "name": "Wien  1.,Innere Stadt",
+    "subRegions": []
+   }
+  ]
+ }
+]
